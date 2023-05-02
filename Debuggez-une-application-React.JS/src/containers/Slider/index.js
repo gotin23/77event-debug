@@ -6,7 +6,7 @@ import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
-  console.log(data);
+
   const [index, setIndex] = useState(0);
   // modification de la fonction de trie
   const byDateDesc = data?.focus.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? 1 : -1));
@@ -15,7 +15,6 @@ const Slider = () => {
     setTimeout(() => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0), 5000);
   };
 
-  console.log(byDateDesc);
   useEffect(() => {
     nextCard();
   });
