@@ -13,9 +13,9 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
+  // Changement de last en data puis ajout d'une fonction de tri et creation de la const last
   const { data } = useData();
-  const byDateDesc = data?.events.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? 1 : -1));
-  const last = byDateDesc[0];
+  const last = data?.events.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? 1 : -1));
 
   return (
     <>
@@ -80,7 +80,8 @@ const Page = () => {
       <footer className="row">
         <div className="col presta">
           <h3>Notre derniére prestation</h3>
-          <EventCard imageSrc={last?.cover} title={last?.title} date={new Date(last?.date)} small label="boom" />
+          {/* modification des props */}
+          {last && <EventCard imageSrc={last[0]?.cover} title={last[0]?.title} date={new Date(last[0]?.date)} small label="boom" />}
         </div>
         <div className="col contact">
           <h3>Contactez-nous</h3>
