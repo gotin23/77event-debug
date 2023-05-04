@@ -34,6 +34,7 @@ const Form = ({ onSuccess, onError }) => {
           <Field placeholder="" label="Prénom" />
           <Select selection={["Personel", "Entreprise"]} onChange={() => null} label="Personel / Entreprise" type="large" titleEmpty />
           <Field placeholder="" label="Email" />
+          {/* ajout de fonction anomyme au click avec appel de onSucces() pour ouverture de la modal */}
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending} onClick={() => onSuccess()}>
             {sending ? "En cours" : "Envoyer"}
           </Button>
