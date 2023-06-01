@@ -15,7 +15,7 @@ const EventCard = ({ imageSrc, imageAlt, date = new Date(), title, label, small 
     </div>
   </div>
 );
-// Je retire le require pour imagesrc,title mais j'ajoute une valeur par defaut(ici vide)
+// Je retire le require pour imagesrc,title mais j'ajoute une valeur par defaut(src vide)
 EventCard.propTypes = {
   imageSrc: PropTypes.string,
   imageAlt: PropTypes.string,

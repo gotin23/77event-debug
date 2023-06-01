@@ -4,18 +4,18 @@ import Select from "../../components/Select";
 import { useData } from "../../contexts/DataContext";
 import Modal from "../Modal";
 import ModalEvent from "../ModalEvent";
-
 import "./style.css";
 
 const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData();
+  console.log(error);
 
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
-  // modification de la fonction filteredEvents avec ajout de data?.events.filter((el) => el.type === type) pour prendre en compte que les doc avec la categorie correspomdante
+  // modification de la fonction filteredEvents avec ajout de data?.events.filter((el) => el.type === type) pour prendre en compte que les doc avec la categorie correspondante
   const filteredEvents = ((!type ? data?.events : data?.events.filter((el) => el.type === type)) || []).filter((event, index) => {
     if ((currentPage - 1) * PER_PAGE <= index && PER_PAGE * currentPage > index) {
       return true;
@@ -36,13 +36,23 @@ const EventList = () => {
       {data === null ? (
         "loading"
       ) : (
-        <>
+        // ajout de data testid
+        <div data-testid="event-list">
           <h3 className="SelectTitle">Catégories</h3>
           <Select selection={Array.from(typeList)} onChange={(value) => (value ? changeType(value) : changeType(null))} />
           <div id="events" className="ListContainer">
             {filteredEvents.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
-                {({ setIsOpened }) => <EventCard onClick={() => setIsOpened(true)} imageSrc={event.cover} title={event.title} date={new Date(event.date)} label={event.type} />}
+                {({ setIsOpened }) => (
+                  <EventCard
+                    data-testid="card-testid-list"
+                    onClick={() => setIsOpened(true)}
+                    imageSrc={event.cover}
+                    title={event.title}
+                    date={new Date(event.date)}
+                    label={event.type}
+                  />
+                )}
               </Modal>
             ))}
           </div>
@@ -54,7 +64,7 @@ const EventList = () => {
               </a>
             ))}
           </div>
-        </>
+        </div>
       )}
     </>
   );

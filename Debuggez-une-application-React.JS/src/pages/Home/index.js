@@ -15,6 +15,7 @@ import { useData } from "../../contexts/DataContext";
 const Page = () => {
   // Changement de last en data puis ajout d'une fonction de tri et creation de la const last
   const { data } = useData();
+
   const last = data?.events.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? 1 : -1));
 
   return (
@@ -51,6 +52,7 @@ const Page = () => {
         {/* ajout de l'id nos realisations */}
         <section className="EventsContainer" id="nos-realisations">
           <h2 className="Title">Nos réalisations</h2>
+          {/* J'ajoute data testid */}
           <EventList />
         </section>
         {/* ajout de l'id notre equipe */}
@@ -84,7 +86,7 @@ const Page = () => {
         <div className="col presta">
           <h3>Notre derniére prestation</h3>
           {/* modification des props */}
-          {last && <EventCard imageSrc={last[0]?.cover} title={last[0]?.title} date={new Date(last[0]?.date)} small label="boom" />}
+          {last && <EventCard data-testid="last-event-card" imageSrc={last[0]?.cover} title={last[0]?.title} date={new Date(last[0]?.date)} small label="boom" />}
         </div>
         <div className="col contact">
           <h3>Contactez-nous</h3>

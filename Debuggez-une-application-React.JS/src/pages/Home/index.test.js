@@ -1,5 +1,48 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Home from "./index";
+import { api, DataProvider } from "../../contexts/DataContext";
+
+const data = {
+  events: [
+    {
+      id: 1,
+      type: "soirée entreprise",
+      date: "2022-04-29T20:28:45.744Z",
+      title: "Conférence #productCON",
+      cover: "/images/stem-list-EVgsAbL51Rk-unsplash.png",
+      description: "Présentation des outils analytics aux professionnels du secteur",
+      nb_guesses: 1300,
+      periode: "24-25-26 Février",
+      prestations: ["1 espace d’exposition", "1 scéne principale", "2 espaces de restaurations", "1 site web dédié"],
+    },
+
+    {
+      id: 12,
+      type: "soirée entreprise",
+      date: "2022-03-29T20:28:45.744Z",
+      title: "Mega Event",
+      cover: "/images/chuttersnap-Q_KdjKxntH8-unsplash.png",
+      description: "Présentation des outils analytics aux professionnels du secteur ",
+      nb_guesses: 1300,
+      periode: "24-25-26 Février",
+      prestations: ["1 espace d’exposition", "1 scéne principale", "2 espaces de restaurations", "1 site web dédié"],
+    },
+  ],
+  focus: [
+    {
+      title: "World economic forum",
+      description: "Oeuvre à la coopération entre le secteur public et le privé.",
+      date: "2022-01-29T20:28:45.744Z",
+      cover: "/images/evangeline-shaw-nwLTVwb7DbU-unsplash1.png",
+    },
+    {
+      title: "Nordic design week",
+      description: "Conférences sur le design de demain dans le digital",
+      date: "2022-03-29T20:28:45.744Z",
+      cover: "/images/teemu-paananen-bzdhc5b3Bxs-unsplash1.png",
+    },
+  ],
+};
 
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
@@ -24,21 +67,45 @@ describe("When Form is created", () => {
       await screen.findByText("Message envoyé !");
     });
   });
-
 });
-
 
 describe("When a page is created", () => {
   it("a list of events is displayed", () => {
     // to implement
-  })
+    render(<Home />);
+    const eventListElement = screen.getByTestId("event-list");
+    expect(eventListElement).toBeDefined();
+  });
   it("a list a people is displayed", () => {
     // to implement
-  })
+    // je recup tous les people et je verifie que ce soit plus que 0
+    render(<Home />);
+    const peopleElements = screen.getAllByTestId("people");
+    expect(peopleElements.length).toBeGreaterThan(0);
+  });
   it("a footer is displayed", () => {
     // to implement
-  })
-  it("an event card, with the last event, is displayed", () => {
+    const { container } = render(<Home />);
+    const footerElement = container.querySelector("footer");
+    expect(footerElement).toBeInTheDocument();
+  });
+  it("an event card, with the last event, is displayed", async () => {
     // to implement
-  })
+    api.loadData = jest.fn().mockReturnValue(data);
+    render(
+      <DataProvider>
+        <Home />
+      </DataProvider>
+    );
+    await waitFor(() => {
+      // recuperation du last event
+      const eventCard = screen.queryByTestId("last-event-card");
+      // verification
+      expect(eventCard).toBeInTheDocument();
+      // creation de constante avec le txt voulu
+      const textElement = "Conférence #productCON";
+      // Vérification de la presence du txt dans eventcard
+      expect(eventCard).toHaveTextContent(textElement);
+    });
+  });
 });

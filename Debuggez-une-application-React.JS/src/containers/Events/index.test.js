@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, waitFor, render, screen } from "@testing-library/react";
 import { api, DataProvider } from "../../contexts/DataContext";
 import Events from "./index";
 
@@ -10,16 +10,10 @@ const data = {
       date: "2022-04-29T20:28:45.744Z",
       title: "Conférence #productCON",
       cover: "/images/stem-list-EVgsAbL51Rk-unsplash.png",
-      description:
-        "Présentation des outils analytics aux professionnels du secteur",
+      description: "Présentation des outils analytics aux professionnels du secteur",
       nb_guesses: 1300,
       periode: "24-25-26 Février",
-      prestations: [
-        "1 espace d’exposition",
-        "1 scéne principale",
-        "2 espaces de restaurations",
-        "1 site web dédié",
-      ],
+      prestations: ["1 espace d’exposition", "1 scéne principale", "2 espaces de restaurations", "1 site web dédié"],
     },
 
     {
@@ -28,8 +22,7 @@ const data = {
       date: "2022-04-29T20:28:45.744Z",
       title: "Forum #productCON",
       cover: "/images/stem-list-EVgsAbL51Rk-unsplash.png",
-      description:
-        "Présentation des outils analytics aux professionnels du secteur",
+      description: "Présentation des outils analytics aux professionnels du secteur",
       nb_guesses: 1300,
       periode: "24-25-26 Février",
       prestations: ["1 espace d’exposition", "1 scéne principale"],
@@ -39,27 +32,34 @@ const data = {
 
 describe("When Events is created", () => {
   it("a list of event card is displayed", async () => {
+    // test completé
     api.loadData = jest.fn().mockReturnValue(data);
     render(
       <DataProvider>
         <Events />
       </DataProvider>
     );
-    await screen.findByText("avril");
+    await waitFor(() => {
+      const eventCards = screen.queryAllByTestId("card-testid-list");
+      expect(eventCards.length).toBeGreaterThan(0);
+    });
   });
   describe("and an error occured", () => {
     it("an error message is displayed", async () => {
-      api.loadData = jest.fn().mockRejectedValue();
+      // ajout d'un message d'erreur
+      const errorMessage = "An error occurred";
+      // ajout de l'erreur
+      api.loadData = jest.fn().mockRejectedValue(new Error(errorMessage));
       render(
         <DataProvider>
           <Events />
         </DataProvider>
       );
-      expect(await screen.findByText("An error occured")).toBeInTheDocument();
+      await screen.findByText("An error occured");
     });
   });
   describe("and we select a category", () => {
-    it.only("an filtered list is displayed", async () => {
+    it("an filtered list is displayed", async () => {
       api.loadData = jest.fn().mockReturnValue(data);
       render(
         <DataProvider>
