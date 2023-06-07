@@ -8,19 +8,14 @@ const Slider = () => {
   const { data } = useData();
 
   const [index, setIndex] = useState(0);
-  // modification de la fonction de tri
   const byDateDesc = data?.focus.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? -1 : 1));
-  // Modification de la fonction next card avec ajout du -1 pour prendre en compte l index qui commence a 0
+  // Modification de la fonction next card avec ajout du -1 a  byDateDesc.length pour prendre en compte l index qui commence a 0
   // Ajout d'une verification a la function nextcard
   const nextCard = () => {
     if (byDateDesc) {
       setTimeout(() => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0), 5000);
     }
   };
-  // const changePicByDots = (idx) => {
-  //   console.log(idx);
-  //   setIndex(idx);
-  // };
   useEffect(() => {
     nextCard();
   });
@@ -35,7 +30,7 @@ const Slider = () => {
               <div className="SlideCard__description">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
-                {/* modification de la structure de de la variable month dans getMonth() */}
+                {/* modification de la structure de l'objet Month dans getMonth() */}
                 <div>{getMonth(new Date(event.date))}</div>
               </div>
             </div>
