@@ -39,6 +39,7 @@ describe("When Events is created", () => {
         <Events />
       </DataProvider>
     );
+    // je verifie qu'il y a plus d'un eventCard
     await waitFor(() => {
       const eventCards = screen.queryAllByTestId("card-testid-list");
       expect(eventCards.length).toBeGreaterThan(0);

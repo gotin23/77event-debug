@@ -30,7 +30,7 @@ const Slider = () => {
               <div className="SlideCard__description">
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
-                {/* modification de la structure de l'objet Month dans getMonth() */}
+                {/* modification de l'objet Month */}
                 <div>{getMonth(new Date(event.date))}</div>
               </div>
             </div>
